@@ -94,6 +94,26 @@ export default {
         to: '/user-list',
         icon: 'mdi-guitar-pick-outline',
         text: 'User List'
+      },
+      {
+        to: '/typography',
+        icon: 'mdi-format-font',
+        text: 'Typography'
+      },
+      {
+        to: '/icons',
+        icon: 'mdi-chart-bubble',
+        text: 'Icons'
+      },
+      {
+        to: '/maps',
+        icon: 'mdi-map-marker',
+        text: 'Maps'
+      },
+      {
+        to: '/notifications',
+        icon: 'mdi-bell',
+        text: 'Notifications'
       }
     ]
   }),

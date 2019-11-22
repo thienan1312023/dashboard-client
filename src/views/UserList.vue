@@ -5,6 +5,7 @@
       :items="list"
       sort-by="userName"
       class="elevation-1 user-table-list"
+      @update:pagination="updatePagination"
     >
       <template slot="headerCell" slot-scope="{ header }">
         <span
@@ -15,7 +16,7 @@
       <template slot="items" slot-scope="{ item }">
         <td>{{ item.userName }}</td>
         <td>{{ item.address }}</td>
-        <td>{{item.phone}}</td>
+        <td>{{ item.phone }}</td>
         <td>{{ item.note }}</td>
         <td>
           <div class="edit-row d-flex justify-content-start">
@@ -28,15 +29,25 @@
         </td>
       </template>
     </v-data-table>
-    <template v-if="dialog">
-      <EditDialog :title="dialogTitle" :editItem="editedItem"></EditDialog>
+    <template v-if="isShowdialog">
+      <EditDialog
+        :title="dialogTitle"
+        :editItem="editedItem"
+        v-on:handleCloseDialog="onCloseDialog"
+      ></EditDialog>
     </template>
   </v-container>
 </template>
 <script>
-import axios from "axios";
 import EditDialog from "@/components/core/EditDialog.vue";
 import { convertObjectToArray } from "../utils/compute";
+import { fetchData } from "../utils/api";
+import {
+  headerUserList,
+  userFields,
+  defaultItem,
+  pathUrl
+} from "../constant/user";
 export default {
   components: {
     EditDialog
@@ -44,43 +55,16 @@ export default {
   data() {
     return {
       dialogTitle: "Edit User",
-      dialog: false,
-      headers: [
-        {
-          sortable: true,
-          text: "Họ tên",
-          value: "userName"
-        },
-        {
-          sortable: false,
-          text: "Địa chỉ",
-          value: "address"
-        },
-        {
-          sortable: false,
-          text: "Số điện thoại",
-          value: "phone"
-        },
-        {
-          sortable: false,
-          text: "Ghi chú",
-          value: "note"
-        },
-        {
-          sortable: false,
-          text: "Chỉnh sửa",
-          value: ""
-        }
-      ],
+      isShowdialog: false,
+      fieldsMapping: userFields,
+      headers: headerUserList,
       list: [],
       editedIndex: -1,
-      editedItem: [],
-      defaultItem: {
-        userName: "",
-        address: "",
-        phone: "",
-        note: ""
-      }
+      editedItem: {
+        array: [],
+        obj: ""
+      },
+      defaultItem: defaultItem
     };
   },
   computed: {
@@ -88,60 +72,59 @@ export default {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     }
   },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    }
-  },
   mounted() {
-    this.fetchData();
+    fetchData(0, 5, pathUrl).then(response => {
+      this.list = response.data.docs;
+    });
   },
   methods: {
-    fetchData() {
-      axios.get("http://localhost:3000/api/user/").then(response => {
-        this.list = response.data;
-      });
+    updatePagination(pagination) {
+      const { page, rowsPerPage } = pagination;
+      fetchData((page - 1) * rowsPerPage, rowsPerPage, pathUrl).then(
+        response => {
+          this.list = response.data.docs;
+        }
+      );
+    },
+    onCloseDialog(value) {
+      if (value === false) {
+        this.isShowdialog = false;
+      }
     },
     editItem(item) {
       this.editedIndex = this.list.indexOf(item);
       let cloneItem = Object.assign({}, item);
-      this.editedItem = Object.keys(cloneItem)
-        .map(key => {
+      let array = Object.keys(cloneItem)
+        .map(function(key) {
           return (
             key !== "createdAt" &&
             key !== "__v" &&
-            key !== "profileImagePath" && { [key]: cloneItem[key] }
+            key !== "profileImagePath" && [key, cloneItem[key]]
           );
         })
         .filter(function(item) {
           return item !== false;
         });
-      this.dialog = true;
+      let headers = [...this.headers];
+      let arrField = headers.splice(0, headers.length - 1);
+      const fieldsMapping = this.fieldsMapping;
+      this.editedItem.array = array.map(function(item, index) {
+        return (
+          item.value !== "" && {
+            0: array[index][0],
+            1: array[index][1],
+            2: fieldsMapping[array[index][0]]
+          }
+        );
+      });
+      this.editedItem.obj = cloneItem;
+      this.isShowdialog = true;
     },
 
     deleteItem(item) {
       const index = this.list.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.list.splice(index, 1);
-    },
-
-    close() {
-      this.dialog = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
-    },
-
-    save() {
-      console.log("save ne");
-      if (this.editedIndex > -1) {
-        Object.assign(this.list[this.editedIndex], this.editedItem);
-      } else {
-        this.list.push(this.editedItem);
-      }
-      this.close();
     }
   }
 };

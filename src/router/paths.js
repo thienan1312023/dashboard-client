@@ -21,10 +21,17 @@ export default [
   },
   {
     path: '/devotion-list',
+    name: 'Devotion List',
     view: 'DevotionList'
   },
   {
     path: '/disbursement-list',
+    name: 'Disbursement List',
     view: 'DisbursementList'
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    view: 'Notifications'
   }
 ]

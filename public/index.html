@@ -18,20 +18,56 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,300italic,400italic' rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="icon" href="<%= BASE_URL %>favicon.png">
-    <title>Vuetify Material Dashboard by Creative Tim</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but Vuetify Material Dashboard doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,300italic,400italic' rel="stylesheet"
+    type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="icon" href="<%= BASE_URL %>favicon.png">
+  <title>Vuetify Material Dashboard by Creative Tim</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but Vuetify Material Dashboard doesn't work properly without JavaScript enabled. Please enable
+      it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>
+
+
+<style>
+  .v-dialog--active {
+    margin-left: 30px;
+    float: left;
+    background: #F5F5F5;
+    overflow-y: scroll;
+    margin-bottom: 25px;
+  }
+
+  .v-dialog--active {
+    min-height: 450px;
+  }
+
+  .v-dialog--active::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+  }
+
+  .v-dialog--active::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5;
+  }
+
+  .v-dialog--active::-webkit-scrollbar-thumb {
+    background-color: #9E9E9E;
+    border-radius: 5px;
+  }
+</style>
