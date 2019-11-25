@@ -30,12 +30,7 @@
         layout
         py-2
       >
-        <v-text-field
-          class="mr-4 purple-input"
-          label="Search..."
-          hide-details
-          color="purple"
-        />
+       
         <router-link
           v-ripple
           class="toolbar-items"

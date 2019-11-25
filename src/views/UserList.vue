@@ -1,5 +1,16 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
+    <div class="active-pink-3 active-pink-4 mb-4 w-100 d-flex">
+      <input
+        class="form-control mr-2"
+        type="text"
+        placeholder="Search All Contents..."
+        aria-label="Search"
+        v-model="searchText"
+        v-on:keyup.enter="searchAllContent()"
+      />
+      <button type="button" class="w-25 btn btn-info" @click="searchAllContent()">Search</button>
+    </div>
     <v-data-table
       :headers="headers"
       :items="list"
@@ -19,27 +30,40 @@
         <td>{{ item.phone }}</td>
         <td>{{ item.note }}</td>
         <td>
-          <div class="edit-row d-flex justify-content-start">
+          <div class="edit-row">
             <i
               aria-hidden="true"
               class="mdi mdi-pencil theme--light primary--text"
               @click="editItem(item)"
             ></i>
+
+            <i aria-hidden="true" class="mdi mdi-account-remove" @click="deleteItem(item)"></i>
           </div>
         </td>
       </template>
     </v-data-table>
-    <template v-if="isShowdialog">
+    <template v-if="isShowEditDialog">
       <EditDialog
         :title="dialogTitle"
         :editItem="editedItem"
         v-on:handleCloseDialog="onCloseDialog"
+        v-on:handleReloadPage="onReloadPage"
       ></EditDialog>
+    </template>
+
+    <template v-if="isShowConfirmDialog">
+      <ConfirmDialog
+        :title="dialogTitle"
+        :deleteItem="deleteItem"
+        v-on:handleCloseDialog="onCloseDialog"
+        v-on:handleReloadPage="onReloadPage"
+      ></ConfirmDialog>
     </template>
   </v-container>
 </template>
 <script>
 import EditDialog from "@/components/core/EditDialog.vue";
+import ConfirmDialog from '@/components/core/ConfirmDialog.vue';
 import { convertObjectToArray } from "../utils/compute";
 import { fetchData } from "../utils/api";
 import {
@@ -50,12 +74,17 @@ import {
 } from "../constant/user";
 export default {
   components: {
-    EditDialog
+    EditDialog,
+    ConfirmDialog
   },
   data() {
     return {
+      page: 1,
+      rowsPerPage: 5,
+      searchText: "",
       dialogTitle: "Edit User",
-      isShowdialog: false,
+      isShowEditDialog: false,
+      isShowConfirmDialog: false,
       fieldsMapping: userFields,
       headers: headerUserList,
       list: [],
@@ -73,14 +102,16 @@ export default {
     }
   },
   mounted() {
-    fetchData(0, 5, pathUrl).then(response => {
+    fetchData(0, 5, "", pathUrl).then(response => {
       this.list = response.data.docs;
     });
   },
   methods: {
     updatePagination(pagination) {
       const { page, rowsPerPage } = pagination;
-      fetchData((page - 1) * rowsPerPage, rowsPerPage, pathUrl).then(
+      this.page = page;
+      this.rowsPerPage = rowsPerPage;
+      fetchData((page - 1) * rowsPerPage, rowsPerPage, "", pathUrl).then(
         response => {
           this.list = response.data.docs;
         }
@@ -88,8 +119,14 @@ export default {
     },
     onCloseDialog(value) {
       if (value === false) {
-        this.isShowdialog = false;
+        this.isShowEditDialog = false;
       }
+    },
+    onReloadPage() {
+      fetchData(0, 5, "", pathUrl).then(response => {
+        this.list = response.data.docs;
+        this.isShowEditDialog = false;
+      });
     },
     editItem(item) {
       this.editedIndex = this.list.indexOf(item);
@@ -118,20 +155,47 @@ export default {
         );
       });
       this.editedItem.obj = cloneItem;
-      this.isShowdialog = true;
+      this.isShowEditDialog = true;
     },
 
     deleteItem(item) {
       const index = this.list.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.list.splice(index, 1);
+      this.isShowConfirmDialog = true;
+      this.list.splice(index, 1);
+    },
+
+    searchAllContent() {
+      this.searchText !== "" &&
+        fetchData(
+          (this.page - 1) * this.rowsPerPage,
+          this.rowsPerPage,
+          this.searchText,
+          `${pathUrl}search`
+        ).then(response => {
+          this.list = response.data;
+        });
     }
   }
 };
 </script>
 
 <style lang="scss">
+.edit-row .mdi-pencil{
+  padding-right: 2.5rem;
+}
 .user-table-list {
   width: 100%;
+}
+.container.fill-height {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
+.mdi-account-remove {
+  color: #de4141;
 }
 </style>

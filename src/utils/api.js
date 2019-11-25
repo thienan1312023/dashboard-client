@@ -1,8 +1,9 @@
 import axios from "axios";
-export const fetchData = (offset, limit, url) => {
+export const fetchData = (offset, limit, searchText = '', url) => {
     const options = {
         offset: offset,
-        limit: limit
+        limit: limit,
+        searchText: searchText
     };
     return axios.get(url, { params: { ...options } })
 };

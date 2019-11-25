@@ -52,21 +52,27 @@
     margin-bottom: 25px;
   }
 
-  .v-dialog--active {
-    min-height: 450px;
+  .v-menu__content {
+    float: left;
+    background: #F5F5F5;
+    overflow-y: scroll;
+    margin-bottom: 25px;
   }
 
-  .v-dialog--active::-webkit-scrollbar-track {
+  .v-dialog--active::-webkit-scrollbar-track,
+  .v-menu__content::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #F5F5F5;
   }
 
-  .v-dialog--active::-webkit-scrollbar {
+  .v-dialog--active::-webkit-scrollbar,
+  .v-menu__content::-webkit-scrollbar {
     width: 8px;
     background-color: #F5F5F5;
   }
 
-  .v-dialog--active::-webkit-scrollbar-thumb {
+  .v-dialog--active::-webkit-scrollbar-thumb,
+  .v-menu__content::-webkit-scrollbar-thumb {
     background-color: #9E9E9E;
     border-radius: 5px;
   }
