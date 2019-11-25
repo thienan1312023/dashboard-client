@@ -44,7 +44,7 @@
     </v-data-table>
     <template v-if="isShowEditDialog">
       <EditDialog
-        :title="dialogTitle"
+        :title="editDialogTitle"
         :editItem="editedItem"
         v-on:handleCloseDialog="onCloseDialog"
         v-on:handleReloadPage="onReloadPage"
@@ -53,8 +53,8 @@
 
     <template v-if="isShowConfirmDialog">
       <ConfirmDialog
-        :title="dialogTitle"
-        :deleteItem="deleteItem"
+        :content="deleteDialogContent"
+        :deleteItem="deleteSelectedItem"
         v-on:handleCloseDialog="onCloseDialog"
         v-on:handleReloadPage="onReloadPage"
       ></ConfirmDialog>
@@ -63,7 +63,7 @@
 </template>
 <script>
 import EditDialog from "@/components/core/EditDialog.vue";
-import ConfirmDialog from '@/components/core/ConfirmDialog.vue';
+import ConfirmDialog from "@/components/core/ConfirmDialog.vue";
 import { convertObjectToArray } from "../utils/compute";
 import { fetchData } from "../utils/api";
 import {
@@ -82,7 +82,8 @@ export default {
       page: 1,
       rowsPerPage: 5,
       searchText: "",
-      dialogTitle: "Edit User",
+      editDialogTitle: "Edit User",
+      deleteDialogContent: "Are you sure to delete this item?",
       isShowEditDialog: false,
       isShowConfirmDialog: false,
       fieldsMapping: userFields,
@@ -93,6 +94,7 @@ export default {
         array: [],
         obj: ""
       },
+      deleteSelectedItem: {},
       defaultItem: defaultItem
     };
   },
@@ -118,8 +120,12 @@ export default {
       );
     },
     onCloseDialog(value) {
-      if (value === false) {
+      if (value === "editDialog") {
         this.isShowEditDialog = false;
+      }
+
+      if (value === "confirmDialog") {
+        this.isShowConfirmDialog = false;
       }
     },
     onReloadPage() {
@@ -160,8 +166,8 @@ export default {
 
     deleteItem(item) {
       const index = this.list.indexOf(item);
+      this.deleteSelectedItem = this.list[index];
       this.isShowConfirmDialog = true;
-      this.list.splice(index, 1);
     },
 
     searchAllContent() {
@@ -180,7 +186,7 @@ export default {
 </script>
 
 <style lang="scss">
-.edit-row .mdi-pencil{
+.edit-row .mdi-pencil {
   padding-right: 2.5rem;
 }
 .user-table-list {

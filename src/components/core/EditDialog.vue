@@ -65,7 +65,7 @@ export default {
   methods: {
     close() {
       this.dialog = false;
-      this.$emit("handleCloseDialog", false);
+      this.$emit("handleCloseDialog", 'editDialog');
     },
     save() {
       this.isLoading = true;

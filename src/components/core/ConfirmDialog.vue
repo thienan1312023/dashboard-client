@@ -1,44 +1,17 @@
 <template>
-  <v-row justify="center">
     <v-dialog v-model="dialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">Confirm Dialog</v-card-title>
-
-        <v-card-text>{{content}}</v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn color="blue darken-1" text @click="dialog = false">OK</v-btn>
-
-          <v-btn color="red darken-1" text @click="dialog = false">Cancel</v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-card-title class="headline">Confirm Dialog</v-card-title>
+      <v-card-text>{{content}}</v-card-text>
+      <v-card-actions>
+        <v-btn color="blue darken-1" text @click="save">OK</v-btn>
+        <v-btn color="red darken-1" text @click="close">Cancel</v-btn>
+      </v-card-actions>
     </v-dialog>
-  </v-row>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  data() {
-    return {
-      dialog: false
-    };
-  },
-  methods: {
-    close() {
-      this.dialog = false;
-      this.$emit("handleCloseDialog", false);
-    }
-  },
-  mounted() {
-    this.dialog = true;
-  },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    }
-  },
   props: {
     content: {
       type: String,
@@ -48,6 +21,50 @@ export default {
       type: Object,
       default: {}
     }
+  },
+  data() {
+    return {
+      dialog: false
+    };
+  },
+  methods: {
+    close() {
+      this.dialog = false;
+      this.$emit("handleCloseDialog", "confirmDialog");
+    },
+
+    save() {
+      this.isLoading = true;
+      axios
+        .delete(`http://localhost:3000/api/user/${this.deleteItem._id}/delete`)
+        .then(response => {
+          this.isLoading = false;
+          this.$emit("handleReloadPage");
+        })
+        .catch(e => {
+          console.error(e);
+        });
+    }
+  },
+  mounted() {
+    this.dialog = true;
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    }
   }
 };
 </script>
+
+<style scoped>
+.v-dialog--active {
+  overflow-y: unset;
+}
+button.v-btn.theme--light.blue.darken-1 {
+  width: 50%;
+}
+button.v-btn.theme--light.red.darken-1 {
+  flex: 1;
+}
+</style>
