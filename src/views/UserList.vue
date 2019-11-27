@@ -1,5 +1,8 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
+    <div class="create-user-container">
+      <v-btn class="mx-0 font-weight-light create-user-container__button" color="success">+ Add new</v-btn>
+    </div>
     <div class="active-pink-3 active-pink-4 mb-4 w-100 d-flex">
       <input
         class="form-control mr-2"
@@ -66,13 +69,12 @@ import EditDialog from "@/components/core/EditDialog.vue";
 import ConfirmDialog from "@/components/core/ConfirmDialog.vue";
 import { convertObjectToArray } from "../utils/compute";
 import { fetchData } from "../utils/api";
-import moment from 'moment';
 import {
   headerUserList,
-  userFields,
   defaultItem,
   pathUrl
 } from "../constant/user";
+import { convertEditItem } from "../controllers/User";
 export default {
   components: {
     EditDialog,
@@ -87,10 +89,8 @@ export default {
       deleteDialogContent: "Are you sure to delete this item?",
       isShowEditDialog: false,
       isShowConfirmDialog: false,
-      fieldsMapping: userFields,
       headers: headerUserList,
       list: [],
-      editedIndex: -1,
       editedItem: {
         array: [],
         obj: ""
@@ -99,11 +99,7 @@ export default {
       defaultItem: defaultItem
     };
   },
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
-  },
+  computed: {},
   mounted() {
     fetchData(0, 5, "", pathUrl).then(response => {
       this.list = response.data.docs;
@@ -136,35 +132,7 @@ export default {
       });
     },
     editItem(item) {
-      this.editedIndex = this.list.indexOf(item);
-      let cloneItem = Object.assign({}, item);
-      let array = Object.keys(cloneItem)
-        .map(function(key) {
-          return (
-            key !== "createdAt" &&
-            key !== "__v" &&
-            key !== "profileImagePath" && [key, cloneItem[key]]
-          );
-        })
-        .filter(function(item) {
-          return item !== false;
-        });
-      let headers = [...this.headers];
-      let arrField = headers.splice(0, headers.length - 1);
-      const fieldsMapping = this.fieldsMapping;
-      this.editedItem.array = array.map(function(item, index) {
-        if(array[index][0] === 'birthDate' && array[index][1]){
-          array[index][1] = moment(array[index][1]).format('DD/MM/YYYY').split('/').join('-');
-        }
-        return (
-          item.value !== "" && {
-            0: array[index][0],
-            1: array[index][1],
-            2: fieldsMapping[array[index][0]]
-          }
-        );
-      });
-      this.editedItem.obj = cloneItem;
+      this.editedItem = convertEditItem(item);
       this.isShowEditDialog = true;
     },
 
@@ -191,6 +159,12 @@ export default {
 </script>
 
 <style lang="scss">
+.create-user-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
 .edit-row .mdi-pencil {
   padding-right: 2.5rem;
 }
@@ -209,7 +183,7 @@ export default {
 .mdi-account-remove {
   color: #de4141;
 }
-.v-toolbar__title.tertiary--text.font-weight-light{
+.v-toolbar__title.tertiary--text.font-weight-light {
   font-size: 2.3rem;
 }
 </style>
