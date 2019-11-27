@@ -1,12 +1,12 @@
 <template>
-    <v-dialog v-model="dialog" max-width="290">
-      <v-card-title class="headline">Confirm Dialog</v-card-title>
-      <v-card-text>{{content}}</v-card-text>
-      <v-card-actions>
-        <v-btn color="blue darken-1" text @click="save">OK</v-btn>
-        <v-btn color="red darken-1" text @click="close">Cancel</v-btn>
-      </v-card-actions>
-    </v-dialog>
+  <v-dialog v-model="dialog" max-width="290">
+    <v-card-title class="headline">Confirm Dialog</v-card-title>
+    <v-card-text>{{content}}</v-card-text>
+    <v-card-actions>
+      <v-btn color="orange darken-1" text @click="close">Cancel</v-btn>
+      <v-btn color="blue darken-1" text @click="save">OK</v-btn>
+    </v-card-actions>
+  </v-dialog>
 </template>
 
 <script>
@@ -64,7 +64,7 @@ export default {
 button.v-btn.theme--light.blue.darken-1 {
   width: 50%;
 }
-button.v-btn.theme--light.red.darken-1 {
+button.v-btn.theme--light.orange.darken-1 {
   flex: 1;
 }
 </style>

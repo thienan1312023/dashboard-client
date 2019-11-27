@@ -66,6 +66,7 @@ import EditDialog from "@/components/core/EditDialog.vue";
 import ConfirmDialog from "@/components/core/ConfirmDialog.vue";
 import { convertObjectToArray } from "../utils/compute";
 import { fetchData } from "../utils/api";
+import moment from 'moment';
 import {
   headerUserList,
   userFields,
@@ -152,6 +153,9 @@ export default {
       let arrField = headers.splice(0, headers.length - 1);
       const fieldsMapping = this.fieldsMapping;
       this.editedItem.array = array.map(function(item, index) {
+        if(array[index][0] === 'birthDate' && array[index][1]){
+          array[index][1] = moment(array[index][1]).format('DD/MM/YYYY').split('/').join('-');
+        }
         return (
           item.value !== "" && {
             0: array[index][0],
@@ -171,6 +175,7 @@ export default {
     },
 
     searchAllContent() {
+      this.searchText === "" && this.onReloadPage();
       this.searchText !== "" &&
         fetchData(
           (this.page - 1) * this.rowsPerPage,
@@ -203,5 +208,8 @@ export default {
 }
 .mdi-account-remove {
   color: #de4141;
+}
+.v-toolbar__title.tertiary--text.font-weight-light{
+  font-size: 2.3rem;
 }
 </style>
