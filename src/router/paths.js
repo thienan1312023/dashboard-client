@@ -7,31 +7,31 @@ export default [
   {
     path: '',
     // Relative to /src/views
-    view: 'Dashboard'
+    module: 'Dashboard'
   },
   {
     path: '/user-profile',
     name: 'User Profile',
-    view: 'UserProfile'
+    module: 'UserProfile'
   },
   {
     path: '/user-list',
     name: 'User List',
-    view: 'UserList'
+    module: 'UserList'
   },
   {
     path: '/devotion-list',
     name: 'Devotion List',
-    view: 'DevotionList'
+    module: 'DevotionList'
   },
   {
     path: '/disbursement-list',
     name: 'Disbursement List',
-    view: 'DisbursementList'
+    module: 'DisbursementList'
   },
   {
     path: '/notifications',
     name: 'Notifications',
-    view: 'Notifications'
+    module: 'Notifications'
   }
 ]

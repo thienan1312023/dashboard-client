@@ -15,12 +15,12 @@ import Meta from 'vue-meta'
 // Routes
 import paths from './paths'
 
-function route (path, view, name) {
+function route(path, module, name) {
   return {
-    name: name || view,
+    name: name || module,
     path,
     component: (resolve) => import(
-      `@/views/${view}.vue`
+      `@/modules/${module}/${module}.vue`
     ).then(resolve)
   }
 }
@@ -30,10 +30,10 @@ Vue.use(Router)
 // Create a new router
 const router = new Router({
   mode: 'history',
-  routes: paths.map(path => route(path.path, path.view, path.name)).concat([
+  routes: paths.map(path => route(path.path, path.module, path.name)).concat([
     { path: '*', redirect: '/' }
   ]),
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     }

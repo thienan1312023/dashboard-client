@@ -1,12 +1,12 @@
 import EditDialog from "@/components/core/EditDialog.vue";
 import ConfirmDialog from "@/components/core/ConfirmDialog.vue";
-import { fetchData } from "../utils/api";
+import { fetchData } from "../../utils/api";
 import {
   headerUserList,
   defaultItem,
   pathUrl
-} from "../constant/user";
-import { convertEditItem } from "../controllers/User";
+} from "../../constant/user";
+import { convertEditItem } from "../../controllers/User";
 export default {
   components: {
     EditDialog,
