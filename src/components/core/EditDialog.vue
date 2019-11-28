@@ -2,7 +2,13 @@
   <div>
     <div class="scrollbar scrollbar-custom">
       <div class="force-overflow">
-        <v-dialog max-width="500px" v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-dialog
+          max-width="500px"
+          v-model="dialog"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
           <!-- <material-card color="green" title="Edit Profile" text="Complete your profile" /> -->
           <v-card>
             <v-card-title>
@@ -43,7 +49,7 @@ import axios from "axios";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import moment from "moment";
-import { updateUser } from "../../controllers/User";
+import { updateUser } from "../../modules/UserList/UserListController";
 export default {
   inheritAttrs: false,
   data: () => ({
@@ -92,13 +98,7 @@ export default {
         .catch(e => {
           console.error(e);
         });
-    },
-    onCancel() {
-      console.log("User cancelled the loader.");
     }
-  },
-  created() {
-    console.log(this.editItem);
   },
   mounted() {
     this.dialog = true;

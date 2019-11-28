@@ -6,7 +6,7 @@ import {
   defaultItem,
   pathUrl
 } from "../../constant/user";
-import { convertEditItem } from "../../controllers/User";
+import { convertEditItem } from "./UserListController";
 export default {
   components: {
     EditDialog,

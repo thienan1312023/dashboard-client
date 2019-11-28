@@ -1,4 +1,4 @@
-import { userFields } from '../constant/user';
+import { userFields } from '../../constant/user';
 import moment from "moment";
 
 export const updateUser = ({ array, obj }) => {
