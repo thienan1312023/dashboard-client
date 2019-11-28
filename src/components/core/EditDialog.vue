@@ -5,9 +5,7 @@
         <v-dialog
           max-width="500px"
           v-model="dialog"
-          fullscreen
           hide-overlay
-          transition="dialog-bottom-transition"
         >
           <!-- <material-card color="green" title="Edit Profile" text="Complete your profile" /> -->
           <v-card>
@@ -16,7 +14,7 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <div v-for="item in editItem.array" :key="item[0]">
+                <div v-for="item in selectedItem.array" :key="item[0]">
                   <div clas="col-12 col-sm-6 col-md-4" v-if="item[0] !== '_id'">
                     <span class="field-title">{{item[2]}}</span>
                     <v-text-field v-show="item[0] !== 'birthDate'" class="pt-0" v-model="item[1]"></v-text-field>
@@ -65,7 +63,7 @@ export default {
       type: String,
       default: ""
     },
-    editItem: {
+    selectedItem: {
       type: Object,
       default: []
     }

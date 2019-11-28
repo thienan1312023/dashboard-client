@@ -7,6 +7,8 @@ import {
   pathUrl
 } from "../../constant/user";
 import { convertEditItem } from "./UserListController";
+import User from '../../models/user';
+import { timingSafeEqual } from "crypto";
 export default {
   components: {
     EditDialog,
@@ -17,15 +19,15 @@ export default {
       page: 1,
       rowsPerPage: 5,
       searchText: "",
-      editDialogTitle: "Edit User",
+      dialogTitle: "",
       deleteDialogContent: "Are you sure to delete this item?",
       isShowEditDialog: false,
       isShowConfirmDialog: false,
       headers: headerUserList,
       list: [],
-      editedItem: {
+      selectedItem: {
         array: [],
-        obj: ""
+        obj: {}
       },
       deleteSelectedItem: {},
       defaultItem: defaultItem
@@ -63,8 +65,15 @@ export default {
         this.isShowEditDialog = false;
       });
     },
-    editItem(item) {
-      this.editedItem = convertEditItem(item);
+    addNewUser(){
+      let user = new User();
+      this.dialogTitle = "Add new User";
+      this.selectedItem = convertEditItem(user);
+      this.isShowEditDialog = true;
+    },
+    editUser(item) {
+      this.dialogTitle = "Edit User";
+      this.selectedItem = convertEditItem(item);
       this.isShowEditDialog = true;
     },
 

@@ -33,7 +33,8 @@ export const userFields = {
     address: "Địa chỉ",
     note: "Ghi chú",
     email: "Email",
-    birthDate: "Ngày sinh"
+    birthDate: "Ngày sinh",
+    
 }
 
 export const defaultItem = {

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
     <div class="create-user-container">
-      <v-btn class="mx-0 font-weight-light create-user-container__button" color="success">+ Add new</v-btn>
+      <v-btn class="mx-0 font-weight-light create-user-container__button" color="success" @click="addNewUser()">+ Add new</v-btn>
     </div>
     <div class="active-pink-3 active-pink-4 mb-4 w-100 d-flex">
       <input
@@ -37,7 +37,7 @@
             <i
               aria-hidden="true"
               class="mdi mdi-pencil theme--light primary--text"
-              @click="editItem(item)"
+              @click="editUser(item)"
             ></i>
 
             <i aria-hidden="true" class="mdi mdi-account-remove" @click="deleteItem(item)"></i>
@@ -47,8 +47,8 @@
     </v-data-table>
     <template v-if="isShowEditDialog">
       <EditDialog
-        :title="editDialogTitle"
-        :editItem="editedItem"
+        :title="dialogTitle"
+        :selectedItem="selectedItem"
         v-on:handleCloseDialog="onCloseDialog"
         v-on:handleReloadPage="onReloadPage"
       ></EditDialog>
