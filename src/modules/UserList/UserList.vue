@@ -1,7 +1,11 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
     <div class="create-user-container">
-      <v-btn class="mx-0 font-weight-light create-user-container__button" color="success" @click="addNewUser()">+ Add new</v-btn>
+      <v-btn
+        class="mx-0 font-weight-light create-user-container__button"
+        color="success"
+        @click="addNewUser()"
+      >+ Add new</v-btn>
     </div>
     <div class="active-pink-3 active-pink-4 mb-4 w-100 d-flex">
       <input
@@ -18,6 +22,9 @@
       :headers="headers"
       :items="list"
       sort-by="userName"
+      item-key="userName" 
+      show-select
+      v-model="selectedUsers"
       class="elevation-1 user-table-list"
       @update:pagination="updatePagination"
     >
@@ -28,6 +35,9 @@
         />
       </template>
       <template slot="items" slot-scope="{ item }">
+        <td>
+          <v-checkbox :value="item.userName" color="green" v-model="selectedUsers"/>
+        </td>
         <td>{{ item.userName }}</td>
         <td>{{ item.address }}</td>
         <td>{{ item.phone }}</td>

@@ -34,7 +34,7 @@ export const userFields = {
     note: "Ghi chú",
     email: "Email",
     birthDate: "Ngày sinh",
-    
+
 }
 
 export const defaultItem = {

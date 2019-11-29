@@ -1,6 +1,8 @@
 <template>
   <v-dialog v-model="dialog" max-width="290">
-    <v-card-title class="headline">Confirm Dialog</v-card-title>
+    <v-card-title>
+      <span class="headline">Confirm Dialog</span>
+    </v-card-title>
     <v-card-text>{{content}}</v-card-text>
     <v-card-actions>
       <v-btn color="orange darken-1" text @click="close">Cancel</v-btn>
@@ -66,5 +68,12 @@ button.v-btn.theme--light.blue.darken-1 {
 }
 button.v-btn.theme--light.orange.darken-1 {
   flex: 1;
+}
+.v-card__title {
+  background: linear-gradient(60deg, #ef5350, #e53935) !important;
+  border-radius: 5px;
+  margin: 5px;
+  padding-left: 2rem;
+  color: white;
 }
 </style>

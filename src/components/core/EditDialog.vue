@@ -2,11 +2,7 @@
   <div>
     <div class="scrollbar scrollbar-custom">
       <div class="force-overflow">
-        <v-dialog
-          max-width="500px"
-          v-model="dialog"
-          hide-overlay
-        >
+        <v-dialog max-width="500px" v-model="dialog" hide-overlay>
           <!-- <material-card color="green" title="Edit Profile" text="Complete your profile" /> -->
           <v-card>
             <v-card-title>
@@ -18,13 +14,12 @@
                   <div clas="col-12 col-sm-6 col-md-4" v-if="item[0] !== '_id'">
                     <span class="field-title">{{item[2]}}</span>
                     <v-text-field v-show="item[0] !== 'birthDate'" class="pt-0" v-model="item[1]"></v-text-field>
-                    <div>
-                      <input
-                        v-show="item[0] === 'birthDate'"
-                        type="text"
-                        v-model="item[1]"
-                        placeholder="dd-mm-yyyy"
-                      />
+                    <div v-show="item[0] === 'birthDate'" class="birth-date">
+                      <input type="text" v-model="item[1]" placeholder="dd-mm-yyyy" class="w-100"/>
+                      <div
+                        v-show="!isValidDate"
+                        class="invalid-date"
+                      >Invalid birth date (valid: dd-mm-yyyy)</div>
                     </div>
                   </div>
                 </div>
@@ -47,10 +42,15 @@ import axios from "axios";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import moment from "moment";
-import { updateUser } from "../../modules/UserList/UserListController";
+import {
+  updateUser,
+  isValidDate,
+  checkValidDateInArr
+} from "../../modules/UserList/UserListController";
 export default {
   inheritAttrs: false,
   data: () => ({
+    isValidDate: true,
     dialog: false,
     isLoading: false,
     fullPage: false
@@ -82,20 +82,25 @@ export default {
       this.$emit("handleCloseDialog", "editDialog");
     },
     save() {
-      this.isLoading = true;
-      let objUpdate = updateUser(this.editItem);
-      axios
-        .put(
-          `http://localhost:3000/api/user/${objUpdate._id}/update`,
-          objUpdate
-        )
-        .then(response => {
-          this.isLoading = false;
-          this.$emit("handleReloadPage");
-        })
-        .catch(e => {
-          console.error(e);
-        });
+      if (!checkValidDateInArr(this.selectedItem.array)) {
+        this.isValidDate = false;
+      } else {
+        let objUpdate = updateUser(this.selectedItem);
+        if (objUpdate) {
+          axios
+            .put(
+              `http://localhost:3000/api/user/${objUpdate._id}/update`,
+              objUpdate
+            )
+            .then(response => {
+              this.isLoading = false;
+              this.$emit("handleReloadPage");
+            })
+            .catch(e => {
+              console.error(e);
+            });
+        }
+      }
     }
   },
   mounted() {
@@ -127,5 +132,17 @@ export default {
 
 .field-title {
   font-weight: 400;
+}
+
+.invalid-date {
+  font-size: 14px;
+  color: red;
+  font-style: italic;
+  padding-bottom: 10px;
+}
+
+.birth-date{
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 </style>

@@ -8,7 +8,6 @@ import {
 } from "../../constant/user";
 import { convertEditItem } from "./UserListController";
 import User from '../../models/user';
-import { timingSafeEqual } from "crypto";
 export default {
   components: {
     EditDialog,
@@ -16,6 +15,7 @@ export default {
   },
   data() {
     return {
+      selectedUsers: [],
       page: 1,
       rowsPerPage: 5,
       searchText: "",
@@ -66,6 +66,7 @@ export default {
       });
     },
     addNewUser(){
+      console.log(this.selectedUsers);
       let user = new User();
       this.dialogTitle = "Add new User";
       this.selectedItem = convertEditItem(user);
