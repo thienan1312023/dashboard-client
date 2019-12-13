@@ -1,6 +1,10 @@
 export const pathUrl = 'http://localhost:3000/api/user/'
 export const headerUserList = [
     {
+        text: 'Chọn',
+        sortable: false
+    },
+    {
         sortable: true,
         text: "Họ tên",
         value: "userName"

@@ -2,10 +2,20 @@
   <v-container fill-height fluid grid-list-xl>
     <div class="create-user-container">
       <v-btn
-        class="mx-0 font-weight-light create-user-container__button"
+        class="mx-1 font-weight-light create-user-container__button"
         color="success"
         @click="addNewUser()"
       >+ Add new</v-btn>
+      <v-btn
+        class="mx-1 font-weight-light create-user-container__button"
+        color="danger"
+        @click="deleteMany()"
+      >Delete</v-btn>
+      <v-btn
+        class="mx-1 font-weight-light create-user-container__button"
+        color="danger"
+        @click="deleteAll()"
+      >Delete All </v-btn>
     </div>
     <div class="active-pink-3 active-pink-4 mb-4 w-100 d-flex">
       <input
@@ -81,7 +91,7 @@
 .create-user-container {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
 }
 .edit-row .mdi-pencil {

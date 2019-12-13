@@ -1,6 +1,6 @@
 import EditDialog from "@/components/core/EditDialog.vue";
 import ConfirmDialog from "@/components/core/ConfirmDialog.vue";
-import { fetchData } from "../../utils/api";
+import { fetchData } from "../../utils/crudAPI";
 import {
   headerUserList,
   defaultItem,
@@ -65,7 +65,7 @@ export default {
         this.isShowEditDialog = false;
       });
     },
-    addNewUser(){
+    addNewUser() {
       console.log(this.selectedUsers);
       let user = new User();
       this.dialogTitle = "Add new User";
@@ -84,6 +84,12 @@ export default {
       this.isShowConfirmDialog = true;
     },
 
+    deleteMany() {
+      const lstId = this.selectedUsers.map(item => {
+        return item._id;
+      });
+      
+    },
     searchAllContent() {
       this.searchText === "" && this.onReloadPage();
       this.searchText !== "" &&

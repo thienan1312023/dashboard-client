@@ -3,7 +3,6 @@
     <div class="scrollbar scrollbar-custom">
       <div class="force-overflow">
         <v-dialog max-width="500px" v-model="dialog" hide-overlay>
-          <!-- <material-card color="green" title="Edit Profile" text="Complete your profile" /> -->
           <v-card>
             <v-card-title>
               <span class="headline">{{title}}</span>
@@ -72,9 +71,6 @@ export default {
     dialog(val) {
       val || this.close();
     }
-  },
-  mounted() {
-    this.indeterminate = false;
   },
   methods: {
     close() {
